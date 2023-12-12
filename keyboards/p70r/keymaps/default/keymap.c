@@ -3,6 +3,7 @@
 
 #include QMK_KEYBOARD_H
 
+#include "quantum.h"
 #include "keymap_japanese.h"
 #include "p70r.h"
 
@@ -47,3 +48,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [3] = LAYOUT( KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO)
 };
 */
+
+// https://25keys.com/2021/12/15/rotary_encoder/#:~:text=VIA/Remap%E3%82%B3%E3%83%B3%E3%83%91%E3%83%81%E3%83%96%E3%83%AB%E3%81%AA%E3%83%95%E3%82%A1%E3%83%BC%E3%83%A0%E3%81%B8
+bool encoder_update_user(uint8_t index, bool clockwise) {
+	// via対応
+	// 以下の表のようにkeyを設定する
+	// index  clockwise     row col     LAYERマクロ内での識別子
+	//   0      true    ->  10  0       KA2
+	//   0      false   ->  10  1       KA3
+	//   1      true    ->  10  2       KA0
+	//   1      false   ->  10  3       KA1
+	//   2      true    ->  11  0       KB2
+	//   2      false   ->  11  1       KB3
+	//   3      true    ->  11  2       KB0
+	//   3      false   ->  11  3       KB1
+	keypos_t key;
+	key.row = index < 2 ? 10 : 11;
+	if( index == 0 || index == 2 ){
+		key.col = clockwise ? 0 : 1;
+	} else if( index == 1 || index == 3 ){
+		key.col = clockwise ? 2 : 3;
+	} else{
+		key.col = 4; // NOP
+	}
+	action_exec((keyevent_t){.key = key, .pressed = true,  .time = (timer_read() | 1)});
+	action_exec((keyevent_t){.key = key, .pressed = false, .time = (timer_read() | 1)});
+
+	return true;
+}

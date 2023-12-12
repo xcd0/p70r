@@ -8,12 +8,6 @@
 		"enabled": true,
 		"matrix": [0,0]
 	},
-	"encoder":{
-		"rotary": [
-			{ "pin_a":"D1", "pin_b":"D0", "resolution": 4 },
-			{ "pin_a":"D4", "pin_b":"F4", "resolution": 4 }
-		]
-	},
 	"usb": {
 		"device_version": "0.0.1",
 		"pid": "0x0050",
@@ -22,7 +16,7 @@
 	"features": {
 		"bootmagic": true,
 		"command": false,
-		"console": false,
+		"console": true,
 		"extrakey": true,
 		"mousekey": true,
 		"nkro": true
@@ -30,12 +24,34 @@
 	"debounce": 5,
 	"diode_direction": "COL2ROW",
 	"matrix_pins": {
-		"cols": ["F5", "F6", "F7", "B1", "B3", "B2", "B6"],
+		"cols": ["B6", "B2", "B3", "B1", "F7", "F6", "F5"],
 		"rows": ["C6", "D7", "E6", "B4", "B5"]
 	},
+	"encoder":{ "enabled": true },
+	"encoder_config":{
+		"rotary": [
+			{ "pin_a":"D1", "pin_b":"D0", "resolution": 4 },
+			{ "pin_a":"D4", "pin_b":"F4", "resolution": 4 }
+		]
+	},
+	"soft_serial_pin": "D3",
 	"split": {
 		"enabled": true,
-		"soft_serial_pin": "D2"
+		"bootmagic":{
+			"matrix": [0,0]
+		},
+		"encoder":{
+			"right": {
+				"rotary": [
+					{ "pin_a":"D1", "pin_b":"D0", "resolution": 4 },
+					{ "pin_a":"D4", "pin_b":"F4", "resolution": 4 }
+				]
+			}
+		},
+		"soft_serial_pin": "D2",
+		"transport": {
+			"protocol": "serial"
+		}
 	},
 	"layouts": {
 		"LAYOUT": {
