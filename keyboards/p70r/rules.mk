@@ -2,3 +2,5 @@
 
 #SPLIT_KEYBOARD = yes
 VIA_ENABLE = yes
+WAIT_FOR_USB = yes
+#BOOTMAGIC_ENABLE = lite

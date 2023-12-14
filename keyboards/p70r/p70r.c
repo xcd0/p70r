@@ -3,6 +3,7 @@
 
 #include "p70r.h"
 
+#if 0
 void keyboard_post_init_kb(void) {
 	debug_enable   = true;
 	debug_matrix   = true;
@@ -10,3 +11,4 @@ void keyboard_post_init_kb(void) {
 	debug_mouse    = true;
 	keyboard_post_init_user();
 }
+#endif

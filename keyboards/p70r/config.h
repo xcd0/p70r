@@ -43,3 +43,16 @@
 #define SERIAL_DEBUG
 
 #define SELECT_SOFT_SERIAL_SPEED 3
+// 0: 約 189kbps (実験目的のみ)
+// 1: 約 137kbps (デフォルト)
+// 2: 約 75kbps
+// 3: 約 39kbps
+// 4: 約 26kbps
+// 5: 約 20kbps
+
+#define SPLIT_USB_DETECT
+
+#define BOOTMAGIC_LITE_ROW 0
+#define BOOTMAGIC_LITE_COLUMN 0
+#define FORCE_NKRO
+#define USE_SERIAL
