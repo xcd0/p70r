@@ -1,6 +1,6 @@
 {
 	"name": "p70r",
-	"vendorId": "0xFEED",
+	"vendorId": "0xFEFF",
 	"productId": "0x0050",
 	"matrix": { "rows": 12, "cols": 7 },
 	"layouts": {

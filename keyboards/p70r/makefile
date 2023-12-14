@@ -1,4 +1,7 @@
 all:
+	make clean
+	make build
+build:
 	make -C ../.. p70r:default
 show:
 	make -C ../.. p70r:default:show_all_features
