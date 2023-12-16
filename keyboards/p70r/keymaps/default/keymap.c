@@ -90,11 +90,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  // コンソールが有効化されている場合、マトリックス上の位置とキー押下状態を出力します
+	// コンソールが有効化されている場合、マトリックス上の位置とキー押下状態を出力します
 #ifdef CONSOLE_ENABLE
-    uprintf("KL: kc: %u, col: %u, row: %u, pressed: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed);
+	uprintf("KL: kc: %u, row: %u, col: %u, pressed: %u\n", keycode, record->event.key.row, record->event.key.col, record->event.pressed);
 #endif
-  return true;
+	return true;
+}
+
+bool encoder_update_kb(uint8_t index, bool clockwise) {
+	if (!encoder_update_user(index, clockwise)) {
+		return false; /* Don't process further events if user function exists and returns false */
+	}
+	return true;
 }
 
 // https://25keys.com/2021/12/15/rotary_encoder/#:~:text=VIA/Remap%E3%82%B3%E3%83%B3%E3%83%91%E3%83%81%E3%83%96%E3%83%AB%E3%81%AA%E3%83%95%E3%82%A1%E3%83%BC%E3%83%A0%E3%81%B8
@@ -111,17 +118,39 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 	//   3      true    ->  11  2       KB0
 	//   3      false   ->  11  3       KB1
 	keypos_t key;
-	key.row = index < 2 ? 5 : 11;
-	if( index == 0 || index == 2 ){
-		key.col = clockwise ? 0 : 1;
-	} else if( index == 1 || index == 3 ){
-		key.col = clockwise ? 2 : 3;
-	} else{
-		key.col = 4; // NOP
+	switch(index){
+		case 0: {
+			if( clockwise ){ key = (keypos_t){ .row = 5, .col = 0 }; }
+			else{            key = (keypos_t){ .row = 5, .col = 1 }; }
+			break;
+		}
+		case 1: {
+			if( clockwise ){ key = (keypos_t){ .row = 5, .col = 2 }; }
+			else{            key = (keypos_t){ .row = 5, .col = 3 }; }
+			break;
+		}
+		case 2: {
+			if( clockwise ){ key = (keypos_t){ .row = 11, .col = 0 }; }
+			else{            key = (keypos_t){ .row = 11, .col = 1 }; }
+			break;
+		}
+		case 3: {
+			if( clockwise ){ key = (keypos_t){ .row = 11, .col = 2 }; }
+			else{            key = (keypos_t){ .row = 11, .col = 3 }; }
+			break;
+		}
 	}
-	action_exec((keyevent_t){.key = key, .pressed = true,  .time = (timer_read() | 1)});
-	uprintf("col: %d, row: %d\n", key.col, key.row);
-	action_exec((keyevent_t){.key = key, .pressed = false, .time = (timer_read() | 1)});
+	//uprintf("index: %d, row: %d, col: %d\n", index, key.row, key.col);
+	keyevent_type_t type = clockwise ? ENCODER_CW_EVENT : ENCODER_CCW_EVENT;
+	keyevent_t event_press   = (keyevent_t){ .key = key, .pressed = true,  .time = (timer_read() | 1), .type = type };
+	action_exec( event_press );
+	//uprintf("%04X%c(%u)\n", (event_press.key.row << 8 | event_press.key.col), (event_press.pressed ? 'd' : 'u'), event_press.time);
+	keyevent_t event_release = (keyevent_t){ .key = key, .pressed = false, .time = (timer_read() | 1), .type = type };
+	action_exec( event_release );
+	//uprintf("%04X%c(%u)\n", (event_release.key.row << 8 | event_release.key.col), (event_release.pressed ? 'd' : 'u'), event_release.time);
+	//action_exec((keyevent_t){.key = key, .pressed = false, .time = (timer_read() | 1)});
+	// action_exec((keyevent_t){.key = key, .pressed = true,  .time = (timer_read32() | 1)});
+	// action_exec((keyevent_t){.key = key, .pressed = false, .time = (timer_read32() | 1)});
 
 	return true;
 	return false;

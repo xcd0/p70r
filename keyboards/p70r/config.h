@@ -29,18 +29,8 @@
 #define MATRIX_COL 7
 #define MATRIX_ROWS 12
 
-// encoder
-//#define ENCODERS_PAD_A { D1, D0 }
-//#define ENCODERS_PAD_B { D4, F4 }
-//
-//#define ENCODERS_PAD_A_RIGHT { D1, D0 }
-//#define ENCODERS_PAD_B_RIGHT { D4, F4 }
-
-#define MOUSEKEY_MOVE_DELTA 32 // default : 8
-
 
 //#define SOFT_SERIAL_PIN D2
-#define SERIAL_DEBUG
 
 //#define SELECT_SOFT_SERIAL_SPEED 3
 // 0: 約 189kbps (実験目的のみ)
@@ -59,4 +49,13 @@
 
 //#define DEBUG_MATRIX_SCAN_RATE
 
+// encoder
+#define ENCODERS 4
 
+//#define MOUSEKEY_MOVE_DELTA 32 // default : 8
+#define MOUSEKEY_MOVE_DELTA 8 // default : 8
+
+
+
+
+//#define SERIAL_DEBUG
