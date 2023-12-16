@@ -42,7 +42,7 @@
 //#define SOFT_SERIAL_PIN D2
 #define SERIAL_DEBUG
 
-#define SELECT_SOFT_SERIAL_SPEED 3
+//#define SELECT_SOFT_SERIAL_SPEED 3
 // 0: 約 189kbps (実験目的のみ)
 // 1: 約 137kbps (デフォルト)
 // 2: 約 75kbps
@@ -56,3 +56,7 @@
 #define BOOTMAGIC_LITE_COLUMN 0
 #define FORCE_NKRO
 #define USE_SERIAL
+
+//#define DEBUG_MATRIX_SCAN_RATE
+
+
